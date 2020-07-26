@@ -1,0 +1,30 @@
+{
+  "name": "orange",
+  "version": "0.0.1",
+  "description": "make your life easy",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "files": ["dist"],
+  "authors": {
+    "name": "bigorange",
+    "email": "576144276@qq.com"
+  },
+  "repository": "/orange",
+  "scripts": {
+    "dev": "father doc dev",
+    "build": "father build"
+  },
+  "peerDependencies": {
+    "ant": "4.x",
+    "react": "16.x"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.13.0",
+    "father": "^2.16.0",
+    "typescript": "^3.3.3"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "antd": "^4.4.3"
+  }
+}

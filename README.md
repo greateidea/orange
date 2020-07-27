@@ -47,8 +47,8 @@ export default (props) => {
 }[]
 ```
 ##### fetchDataFunc
-It will be invoked when 'comonentDidmount' and the event 'onChange' of [antd](https://ant.design/) `Table` triggered.
-if you provide a [ref](#ref), it will give you a 'doQuery' function to invoked 'fetchDataFunc'.
+It will be invoked when 'comonentDidmount' and 'onChange' of [antd](https://ant.design/) `Table` triggered.
+Provide a [ref](#ref), the 'doQuery' function can be used to tigger 'fetchDataFunc'.
 ```js
 (pagination, filters, sorter) => Promise<
   current: string | number;
@@ -58,13 +58,13 @@ if you provide a [ref](#ref), it will give you a 'doQuery' function to invoked '
 >
 ```
 ##### onGetData
-the 'data' is the result of invoking [fetchDataFunc](#fetchDataFunc).
+The 'data' is the result of invoking [fetchDataFunc](#fetchDataFunc).
 It trigged after [fetchDataFunc](#fetchDataFunc) return the result evertime.
 ```js
 (data) => void
 ```
 ##### ref
-this will give you a 'doQuery' function to invoked [fetchDataFunc](#fetchDataFunc).
+This provide a 'doQuery' function for invoking [fetchDataFunc](#fetchDataFunc).
 ```js
 import React, { useRef } from 'react';
 
@@ -77,7 +77,7 @@ const myRef = useRef();
 />
 ```
 ##### disableInitialQuery
-boolean, if you don't want trigger the [fetchDataFunc](#fetchDataFunc) when 'componetDidmount', set it "true".
+Boolean, if you don't want trigger the [fetchDataFunc](#fetchDataFunc) when 'componetDidmount', set it "true".
 ```js
 <FetchDataTable
   ...
@@ -85,13 +85,13 @@ boolean, if you don't want trigger the [fetchDataFunc](#fetchDataFunc) when 'com
   ...
 />
 ```
-##### antTableProps
+##### antdTableProps
 `FetchDataTable` use `Table` of [atnd](https://ant.design/components/table/), this value is the same with `Table` api.
 but 'columns', 'dataSource', 'onChange' are disabled.
 ```js
 <FetchDataTable
   ...
-  antTableProps: { size: "small" }
+  antdTableProps: { size: "small" }
   ...
 />
 ```
@@ -102,7 +102,7 @@ but 'columns', 'dataSource', 'onChange' are disabled.
 "horizontal" | "vertical"
 
 ##### source
-the button list, options:
+The button list, options:
 
 `label`: the button label,
 
@@ -110,10 +110,10 @@ the button list, options:
 
 `antdButtonProps`: the [BttonGroup](#BttonGroup) use Button of [antd](https://ant.design/components/button/),  this value is the same with `Button` api.
 
-`clickedButtonStyle`: this value have two attributes, 'style' and 'antdButtonProps', it will be apply to the button clicked.
+`clickedButtonStyle`: this include 'style' and 'antdButtonProps', it will be apply to the button clicked.
 
 ##### onClick
-the function will put the the button's 'label' & 'key' to the params.
+This function will put the the button's 'label' & 'key' to the params.
 
 
 ## License

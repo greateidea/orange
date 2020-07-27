@@ -6,7 +6,7 @@ import { TableProps } from 'rc-table/lib/Table';
  * columns: 表头
  * disableInitialQuery: 禁用挂载时查询
  * onGetData: 获取远程数据后的回调
- * antTableProps: ant Table的props, columns, dataSource会被忽略
+ * andtTableProps: antd Table的props, columns, dataSource会被忽略
  * ref: 获取内部方法，例如点击查询时处罚查询
  * fetchDataFunc: 获取远程数据的函数，在组件挂在时和onChange事件时执行
  */
@@ -23,7 +23,7 @@ type OriginDataModal =
 
 type FetchDataTableModel = {
   columns: Dict[];
-  antTableProps?: TableProps<any>;
+  antdTableProps?: TableProps<any>;
   disableInitialQuery?: boolean; // 是否需要挂载时自动查询
   ref?: React.Ref<any>;
   onGetData?: (data: any) => any; // 获取远程数据后的回调
@@ -34,21 +34,21 @@ type FdtRefCurrentAttrType = {
   doQuery: () => void;
 }
 
-const getOtherAntTableProps = (originAntTableProps = {}) => {
+const getOtherAntdTableProps = (originAntdTableProps = {}) => {
   let currentAntdTableProps: Dict = {};
   const disableList = ['columns', 'dataSource', 'onChange'];
 
-  for (let key in originAntTableProps) {
+  for (let key in originAntdTableProps) {
     if (disableList.findIndex(disabledKey => disabledKey === key) > -1) {
       console.warn(`the props [${key}] will be ignore.`);
     } else {
-      currentAntdTableProps[key] === (originAntTableProps as Dict)[key];
+      currentAntdTableProps[key] === (originAntdTableProps as Dict)[key];
     }
   }
 };
 
 export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, ref) => {
-  const { columns, disableInitialQuery, antTableProps, onGetData, fetchDataFunc } = props;
+  const { columns, disableInitialQuery, antdTableProps, onGetData, fetchDataFunc } = props;
   const [data, setData] = useState<Dict[]>([]);
   const [pagination, setPagination] = useState<any>({ current: '1', pageSize: '10', total: '0' });
   const [loading, setLoading] = useState<boolean>(false);
@@ -112,7 +112,7 @@ export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, re
           pagination={pagination}
           onChange={handleTableChange}
           loading={loading}
-          {...getOtherAntTableProps(antTableProps)}
+          {...getOtherAntdTableProps(antdTableProps)}
         />
       ) : (
         <Empty />

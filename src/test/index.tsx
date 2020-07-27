@@ -68,7 +68,7 @@ const fetchDataFunc = (pagination: any) => {
   return Promise.resolve({ ...pagination, total: 40, data: getTestData(pagination), });
 };
 
-const antTableProps = { size: 'default' };
+const antdTableProps = { size: 'default' };
 
 export default function TestComponents(props = {}) {
 
@@ -83,7 +83,7 @@ export default function TestComponents(props = {}) {
         key="table"
         columns={TableColumes}
         fetchDataFunc={fetchDataFunc}
-        antTableProps={antTableProps}
+        antdTableProps={antdTableProps}
       />
     </div>
   )

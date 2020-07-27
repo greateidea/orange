@@ -11,7 +11,7 @@
     "name": "bigorange",
     "email": "576144276@qq.com"
   },
-  "repository": "/orange",
+  "repository": "https://github.com/greateidea/orange",
   "scripts": {
     "dev": "father doc dev",
     "build": "father build"

@@ -11,7 +11,7 @@ npm install @bigorange/ui
 ```
 ## Example
 ```js
-import { FetchDataTable, ButtonGroup} from 'bigorange/ui';
+import { FetchDataTable, ButtonGroup} from '@bigorange/ui';
 
 export default (props) => {
   return (

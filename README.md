@@ -70,7 +70,7 @@ import React, { useRef } from 'react';
 
 const myRef = useRef();
 
-<FetchDataTble
+<FetchDataTable
   ...
   ref={ myRef } // then you can trigger the `fetchDataFunc` by 'myRef.current.doQuery()'
   ...
@@ -79,17 +79,17 @@ const myRef = useRef();
 ##### disableInitialQuery
 boolean, if you don't want trigger the [fetchDataFunc](#fetchDataFunc) when 'componetDidmount', set it "true".
 ```js
-<FetchDataTble
+<FetchDataTable
   ...
   disableInitialQuery
   ...
 />
 ```
 ##### antTableProps
-`FetchDataTble` use `Table` of [atnd](https://ant.design/components/table/), this value is the same with `Table` api.
+`FetchDataTable` use `Table` of [atnd](https://ant.design/components/table/), this value is the same with `Table` api.
 but 'columns', 'dataSource', 'onChange' are disabled.
 ```js
-<FetchDataTble
+<FetchDataTable
   ...
   antTableProps: { size: "small" }
   ...

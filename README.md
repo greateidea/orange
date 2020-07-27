@@ -11,7 +11,7 @@ npm install @bigorange/ui
 ```
 ## Example
 ```js
-import { FetchDataTble, ButtonGourp } from 'bigorange/ui';
+import { FetchDataTable, ButtonGourp } from 'bigorange/ui';
 
 export default (props) => {
   return (
@@ -35,7 +35,7 @@ export default (props) => {
 ```
 ## API
 
-### FetchDataTble
+### FetchDataTable
 
 ##### columns
 ```js

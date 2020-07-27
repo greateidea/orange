@@ -4,7 +4,9 @@
   "description": "make your life easy",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "authors": {
     "name": "bigorange",
     "email": "576144276@qq.com"
@@ -15,7 +17,7 @@
     "build": "father build"
   },
   "peerDependencies": {
-    "ant": "4.x",
+    "antd": "4.x",
     "react": "16.x"
   },
   "devDependencies": {

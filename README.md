@@ -96,7 +96,7 @@ but 'columns', 'dataSource', 'onChange' are disabled.
 />
 ```
 
-### BttonGroup
+### ButtonGroup
 
 ##### direction
 "horizontal" | "vertical"
@@ -108,14 +108,15 @@ The button list, options:
 
 `key`: give every button a key,
 
-`antdButtonProps`: the [BttonGroup](#BttonGroup) use Button of [antd](https://ant.design/components/button/),  this value is the same with `Button` api.
+`antdButtonProps`: the [ButtonGroup](#ButtonGroup) use Button of [antd](https://ant.design/components/button/),  this value is the same with `Button` api.
 
 `clickedButtonStyle`: this include 'style' and 'antdButtonProps', it will be apply to the button clicked.
 
 ##### onClick
-This function will put the the button's 'label' & 'key' to the params.
-
-
+the the button's 'label' & 'key' will put into the params.
+```js
+(label, key) => {}
+```
 ## License
 
 [MIT](LICENSE)

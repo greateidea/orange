@@ -1,6 +1,7 @@
 import React from 'react';
 import FetchDataTable from '../component/fetchDataTable';
 import ButtonGroup from '../component/buttonGroup';
+import "antd/dist/antd.css";
 
 const ButtonGroupSource = [
   { label: '陈西露', key: "cxl", clickedButtonStyle: { type: "dashed" } },

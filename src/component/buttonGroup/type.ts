@@ -7,12 +7,12 @@ export type UniButtonModel = {
   label: string;
   key: any;
   style?: Dict;
-  antdButtonProps?: ButtonProps;
+  antdButtonProps?: Dict;
 };
 
 export type clickedButtonStyleModel = {
   style?: Dict;
-  antdButtonProps?: ButtonProps;
+  antdButtonProps?: ButtonProps & Dict;
 };
 
 export type AnyFC = {

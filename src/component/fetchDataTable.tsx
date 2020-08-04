@@ -23,7 +23,7 @@ type OriginDataModal =
 
 type FetchDataTableModel = {
   columns: Dict[];
-  antdTableProps?: TableProps<any>;
+  antdTableProps?: TableProps<any> & Dict;
   disableInitialQuery?: boolean; // 是否需要挂载时自动查询
   ref?: React.Ref<any>;
   onGetData?: (data: any) => any; // 获取远程数据后的回调

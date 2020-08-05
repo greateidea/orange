@@ -5,6 +5,7 @@ import { TableProps } from 'rc-table/lib/Table';
 /**
  * columns: 表头
  * disableInitialQuery: 禁用挂载时查询
+ * disableOnChangeQuery: boolean; // 禁用onChange时查询
  * onGetData: 获取远程数据后的回调
  * andtTableProps: antd Table的props, columns, dataSource会被忽略
  * ref: 获取内部方法，例如点击查询时处罚查询
@@ -25,9 +26,10 @@ type FetchDataTableModel = {
   columns: Dict[];
   antdTableProps?: TableProps<any> & Dict;
   disableInitialQuery?: boolean; // 是否需要挂载时自动查询
+  disableOnChangeQuery?: boolean; // 禁用onChange时查询
   ref?: React.Ref<any>;
   onGetData?: (data: any) => any; // 获取远程数据后的回调
-  fetchDataFunc?: (pagination: Dict) => Promise<OriginDataModal | undefined>;
+  fetchDataFunc?: (pagination: Dict, filters: Dict, sorter: Dict) => Promise<OriginDataModal | undefined>;
 };
 
 type FdtRefCurrentAttrType = {
@@ -48,17 +50,17 @@ const getOtherAntdTableProps = (originAntdTableProps = {}) => {
 };
 
 export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, ref) => {
-  const { columns, disableInitialQuery, antdTableProps, onGetData, fetchDataFunc } = props;
+  const { columns, disableInitialQuery, disableOnChangeQuery, antdTableProps, onGetData, fetchDataFunc } = props;
   const [data, setData] = useState<Dict[]>([]);
   const [pagination, setPagination] = useState<any>({ current: '1', pageSize: '10', total: '0' });
   const [loading, setLoading] = useState<boolean>(false);
 
   const instanceValue = useRef<any>({ unmount: false });
 
-  const newInvokeFetchData = (pagination: Dict) => {
+  const newInvokeFetchData = (pagination: Dict, filters = {}, sorter = {}) => {
     setLoading(true);
     fetchDataFunc &&
-      fetchDataFunc(pagination).then((originData: OriginDataModal) => {
+      fetchDataFunc(pagination, filters, sorter).then((originData: OriginDataModal) => {
         if (originData) {
           const { data, pageSize, current, total } = originData;
           if (instanceValue.current.unmount) {
@@ -92,14 +94,11 @@ export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, re
   }));
 
   const handleTableChange = (tablePagination: Dict, filters: Dict, sorter: Dict) => {
-    console.log('pagination, filters, sorter', tablePagination, filters, sorter);
-    const { current, pageSize } = pagination;
-    if (!current || !pageSize) {
-      // 返回的数据没有分页信息，不需要分页时查询
-      return;
+    if (disableOnChangeQuery) {
+      setPagination(tablePagination);
+    } else {
+      newInvokeFetchData(tablePagination, filters, sorter);
     }
-
-    newInvokeFetchData(tablePagination);
   };
 
   return (

@@ -85,6 +85,16 @@ Boolean, if you don't want trigger the [fetchDataFunc](#fetchDataFunc) when 'com
   ...
 />
 ```
+##### disableOnChangeQuery
+Boolean, if you don't want trigger the [fetchDataFunc](#fetchDataFunc) in 'onChange' of [atnd](https://ant.design/components/table/) Table, set it "true".
+```js
+<FetchDataTable
+  ...
+  disableOnChangeQuery
+  ...
+/>
+```
+
 ##### antdTableProps
 `FetchDataTable` use `Table` of [atnd](https://ant.design/components/table/), this value is the same with `Table` api.
 but 'columns', 'dataSource', 'onChange' are disabled.

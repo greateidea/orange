@@ -375,14 +375,6 @@ your customzed comoponent used to trigger [onValidate](#onValidate)
 
 #### antdFormProps
 `QueryGroup` use the antd [Form](https://ant.design/components/form/), `antdFormProps` is hust the same with `antd Form` [API](https://ant.design/components/form/#API), but `onFinishFailed` `onFinish` are disabled in `antdFormProps`.
-
-#### ref
-ref.current: { doValidate: () => Promise<any>; form: FormInstance }, the `FormInstance` is the with `antd Table` FormInstance
-
-#### buttonLable
-the default button's label
-
-## License
 ```js
   <QueryGroup
     ...
@@ -390,4 +382,12 @@ the default button's label
     ...
   />
 ```
+#### ref
+ref.current: { doValidate: () => Promise<any>; form: FormInstance }, the `FormInstance` is the with `antd Table` FormInstance
+
+#### buttonLable
+the default button's label
+
+## License
+
 [MIT](LICENSE)

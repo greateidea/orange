@@ -1,6 +1,6 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Table, Empty } from 'antd';
-import { TableProps } from 'rc-table/lib/Table';
+import { OriginDataModal, FetchDataTableModel, Dict } from './type';
 
 /**
  * columns: 表头
@@ -11,42 +11,23 @@ import { TableProps } from 'rc-table/lib/Table';
  * ref: 获取内部方法，例如点击查询时处罚查询
  * fetchDataFunc: 获取远程数据的函数，在组件挂在时和onChange事件时执行
  */
-type Dict = {[key: string]: any};
-
-type OriginDataModal =
-  | {
-      current: string | number;
-      pageSize: string | number;
-      total: string | number;
-      data: any;
-    }
-  | undefined;
-
-type FetchDataTableModel = {
-  columns: Dict[];
-  antdTableProps?: TableProps<any> & Dict;
-  disableInitialQuery?: boolean; // 是否需要挂载时自动查询
-  disableOnChangeQuery?: boolean; // 禁用onChange时查询
-  ref?: React.Ref<any>;
-  onGetData?: (data: any) => any; // 获取远程数据后的回调
-  fetchDataFunc?: (pagination: Dict, filters: Dict, sorter: Dict) => Promise<OriginDataModal | undefined>;
-};
 
 type FdtRefCurrentAttrType = {
   doQuery: () => void;
 }
 
-const getOtherAntdTableProps = (originAntdTableProps = {}) => {
+export const getOtherAntdTableProps = (originAntdTableProps = {}, disableList: string[]) => {
   let currentAntdTableProps: Dict = {};
-  const disableList = ['columns', 'dataSource', 'onChange'];
 
   for (let key in originAntdTableProps) {
-    if (disableList.findIndex(disabledKey => disabledKey === key) > -1) {
+    if (disableList?.findIndex(disabledKey => disabledKey === key) > -1) {
       console.warn(`the props [${key}] will be ignore.`);
     } else {
-      currentAntdTableProps[key] === (originAntdTableProps as Dict)[key];
+      currentAntdTableProps[key] = (originAntdTableProps as Dict)[key];
     }
   }
+
+  return currentAntdTableProps;
 };
 
 export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, ref) => {
@@ -88,7 +69,6 @@ export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, re
   useImperativeHandle(ref, () => ({
     // doQuery 暴露给父组件的方法
     doQuery: () => {
-      console.log('do query');
       newInvokeFetchData && newInvokeFetchData({ current: 1, pageSize: 10 });
     },
   }));
@@ -111,7 +91,7 @@ export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, re
           pagination={pagination}
           onChange={handleTableChange}
           loading={loading}
-          {...getOtherAntdTableProps(antdTableProps)}
+          {...getOtherAntdTableProps(antdTableProps, ['columns', 'dataSource', 'onChange'])}
         />
       ) : (
         <Empty />

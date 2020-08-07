@@ -1,6 +1,9 @@
 import React from 'react';
-import FetchDataTable from '../component/fetchDataTable';
-import ButtonGroup from '../component/buttonGroup';
+import { Divider } from 'antd';
+import FetchDataTable from '../component/FetchDataTable';
+import ButtonGroup from '../component/ButtonGroup';
+import ConfigTableTest from './ConfigTableTest';
+import QueryGroupTest from './QueryGroupTest';
 import "antd/dist/antd.css";
 
 const ButtonGroupSource = [
@@ -86,6 +89,9 @@ export default function TestComponents(props = {}) {
         fetchDataFunc={fetchDataFunc}
         antdTableProps={antdTableProps}
       />
+      <Divider />
+      <QueryGroupTest />
+      <ConfigTableTest />
     </div>
   )
 }

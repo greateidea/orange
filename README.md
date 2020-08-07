@@ -127,6 +127,244 @@ the the button's 'label' & 'key' will put into the params.
 ```js
 (label, key) => {}
 ```
-## License
 
+### ConfigTable
+Example
+
+```js
+import React, { useRef } from 'react';
+import { Button } from 'ant';
+import { ConfigTable } from '@bigorange/ui';
+
+export default (props) => {
+  const currentRef = useRef();
+  return (
+    <>
+      <Button
+        onClick={() => { currentRef.current.doQuery(); }}
+      >
+        Do Query
+      <Button/>
+      <ConfigTable
+        config={...}
+        fetchDataFunc={(pagination, filters, sorter) => Promise.resolve({ data: ..., pageSize: ..., current: ..., total: ... })}
+        onGetData={data => { console.log("data: ", data) }}
+        ref={currentRef}
+      />
+    </>
+  )
+}
+
+##### config
+```js
+{
+  columns: {
+    key: any;
+    dataIndex: string;
+    title: string | reactNode;
+    render: (text: string, record: object) => reactNode;
+  } // the antd Table columns
+  disableOnChangeQuery?: boolean; // the FetchDataTable disableOnChangeQuery
+  disableInitialQuery?: boolean; // disable query when didmount
+  component?: reactNode; // customzed component
+}
+```
+##### fetchDataFunc
+It will be invoked when 'comonentDidmount' and the event 'onChange' of [antd](https://ant.design/) `Table` triggered.
+if you provide a [ref](#ref), it will give you a 'doQuery' function to invoked 'fetchDataFunc'.
+```js
+(pagination, filters, sorter) => Promise<
+  current: string | number;
+  pageSize: string | number;
+  total: string | number;
+  data: any;
+>
+```
+##### onGetData
+the 'data' is the result of invoking [fetchDataFunc](#fetchDataFunc).
+It trigged after [fetchDataFunc](#fetchDataFunc) return the result evertime.
+```js
+(data) => void
+```
+##### ref
+this will give you a 'doQuery' function to invoked [fetchDataFunc](#fetchDataFunc).
+
+##### antTableProps
+Using `Table` of [atnd](https://ant.design/components/table/), this value is the same with `Table` api.
+but 'columns', 'dataSource', 'onChange' are disabled.
+```js
+<ConfigTable
+  ...
+  antTableProps: { size: "small" }
+  ...
+/>
+```
+
+##### customProps
+'customProps' will be post to 'component' of [config](#config)
+```js
+<ConfigTable
+  ...
+  customProps: { xxx: ... }
+  ...
+/>
+```
+
+### QueryGroup
+```js
+import { QueryGroup } from '@bigorange/ui';
+import moment from 'moment';
+
+const startMoment = moment().subtract(1, 'years');
+const endMoment = moment();
+
+// the QueryGroup Config
+const config = [
+  {
+    label: 'Name',
+    name: "name",
+    type: 'Input',
+    rules: [
+      {
+        required: true,
+        message: 'Please input name!',
+      },
+    ],
+    initialValue: 'Orange'
+  },
+  {
+    label: 'Phone',
+    name: "phone",
+    type: 'Input',
+    rules: [
+      {
+        required: true,
+        message: 'Please input phone!',
+      },
+    ],
+  },
+  {
+    label: 'Fruits',
+    name: "fruits",
+    type: 'Select',
+    options: [
+      {
+        label: 'Orange',
+        value: 'orange',
+      },
+      {
+        label: 'Apple',
+        value: 'apple',
+      },
+      {
+        label: 'Mango',
+        value: 'mango'
+      },
+    ],
+    initialValue: 'orange',
+  },
+  {
+    label: 'Start Date',
+    name: 'start',
+    type: 'DatePicker',
+    rules: [
+      {
+        required: true,
+        message: '请输入开始日期!',
+      },
+    ],
+    format: 'YYYY-MM-DD',
+  },
+  {
+    label: 'Month',
+    name: 'month',
+    type: 'DatePicker',
+    rules: [
+      {
+        required: true,
+        message: '请选择月份!',
+      },
+    ],
+    format: 'YYYY-MM',
+    antdDataEntryProps: {
+      picker: 'month',
+    },
+  },
+  {
+    label: '创建时间',
+    type: 'RangePicker',
+    rangeNames: ['startTime', 'endTime'], // default name: "startTime-endTime"
+    initialValue: [startMoment, endMoment],
+  },
+  {
+    label: '自定义输入框',
+    name: 'coolNumber',
+    type: CustomerInput, // your customized form control
+    initialValue: 111,
+  },
+]
+
+export default (props) => {
+  return (
+    <>
+      <Button
+        onClick={() => {
+          ref.current?.doValidate().then(r => {
+            if (r) {
+              console.log(r);
+            }
+          })
+        }}
+      >
+        查询
+      </Button>
+      <QueryGroup
+        source={config}
+        onValidate={(values: Dict) => {
+          console.log("values: ", values)
+          return "good";
+        }}
+        queryComp={<a>点击查询</a>} // or queryComp={null}
+        initialValues={{ name: 'a cool name', phone: '123' }}
+        ref={ref}
+      />
+    </>
+  )
+}
+```
+
+### QueryGroup API
+
+##### source
+```js
+{
+  type: 'InputNumber' | 'Input' | 'DatePicker' | 'DatePicker' | 'RangePicker' | JSX.Element; // it's value could be your customized form control
+  name?: string;
+  label: string;
+  options?: { value: any; label: string }[];
+  initialValue?: any;
+  rules?: {[key: string]: any}; // antd form api "rules"
+  style?: Dict;
+  rangeNames?: string[];
+  antdDataEntryProps?: {[key: string]: any}; // antd Data Entry Components' Props
+  format?: string; // the data format, eg. 'YYYY-MM-DD HH:ss:mm'
+}
+```
+##### onValidate
+return the form data.
+
+#### queryComp
+your customzed comoponent used to trigger [onValidate](#onValidate)
+
+#### antdFormProps
+`QueryGroup` use the antd [Form](https://ant.design/components/form/), `antdFormProps` is hust the same with `antd Form` [API](https://ant.design/components/form/#API), but `onFinishFailed` `onFinish` are disabled in `antdFormProps`.
+
+## License
+```js
+  <QueryGroup
+    ...
+    antdFormProps={{ layout: 'vertical' }}
+    ...
+  />
+```
 [MIT](LICENSE)

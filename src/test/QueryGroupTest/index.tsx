@@ -6,8 +6,8 @@ import { Dict } from '../../component/FetchDataTable/type';
 
 export default () => {
   const [visible, setVisible] = useState(false);
-  const ref = useRef<{doValidate: () => any }>();
-  const ref2 = useRef<{doValidate: () => any }>();
+  const ref = useRef<{doValidate: () => any, form: any }>();
+  const ref2 = useRef<{doValidate: () => any, form: any }>();
   const [queryGroupConfig, setQueryGroupConfig] = useState(config);
 
   const formItemLayout = {
@@ -41,6 +41,7 @@ export default () => {
             if(r) {
               console.log('doValidate: ', r)
               setVisible(false);
+              ref2.current?.form.resetFields();
             }
           });
         }}

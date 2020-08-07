@@ -297,6 +297,22 @@ const config = [
     initialValue: [startMoment, endMoment],
   },
   {
+    label: '是否上天',
+    name: 'upSky',
+    type: 'Checkbox',
+    initialValue: true,
+  },
+  {
+    label: '左青龙右白虎',
+    name: 'godAnimal',
+    type: 'Checkbox.Group',
+    options: [
+      { label: '青龙', value: 'green dragon' },
+      { label: '白虎', value: 'white tiger' },
+    ],
+    initialValue: [],
+  },
+  {
     label: '自定义输入框',
     name: 'coolNumber',
     type: CustomerInput, // your customized form control
@@ -312,6 +328,7 @@ export default (props) => {
           ref.current?.doValidate().then(r => {
             if (r) {
               console.log(r);
+              ref.current?.form.resetFields();
             }
           })
         }}
@@ -358,6 +375,12 @@ your customzed comoponent used to trigger [onValidate](#onValidate)
 
 #### antdFormProps
 `QueryGroup` use the antd [Form](https://ant.design/components/form/), `antdFormProps` is hust the same with `antd Form` [API](https://ant.design/components/form/#API), but `onFinishFailed` `onFinish` are disabled in `antdFormProps`.
+
+#### ref
+ref.current: { doValidate: () => Promise<any>; form: FormInstance }, the `FormInstance` is the with `antd Table` FormInstance
+
+#### buttonLable
+the default button's label
 
 ## License
 ```js

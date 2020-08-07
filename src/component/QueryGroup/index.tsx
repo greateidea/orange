@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { Select, DatePicker, Input, Form, Button, InputNumber, Checkbox } from 'antd';
 import { getOtherAntdTableProps } from '../FetchDataTable';
-import  { FormProps } from 'antd/lib/form';
+import  { FormProps, FormInstance } from 'antd/lib/form';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
@@ -35,10 +35,12 @@ type QueryCriteriaGroupModel = {
   antdFormProps?: FormProps;
   queryComp?: string | JSX.Element | null;
   onFinishFailed?: (error: Dict) => void;
+  buttonLabel?: string;
 };
 
 type QCGRefCurrentAttrType = {
   doValidate: () => Promise<any>;
+  form: FormInstance;
 }
 
 export enum QueryCriteriaCompType {
@@ -83,7 +85,7 @@ const GetInitialValues = (source: CriteriaSourceModel[], formInitialValuse: Dict
 };
 
 export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupModel>((props, ref) => {
-  const { source, onValidate, key, initialValues, antdFormProps, queryComp, onFinishFailed } = props;
+  const { source, onValidate, key, initialValues, antdFormProps, queryComp, onFinishFailed, buttonLabel } = props;
   const [form] = Form.useForm();
   const compList: CriteriaSourceModel[] = Array.isArray(source) ? source.map(itm => ({ ...itm, name: GetItemName(itm) })) : [];
   const tailLayout = {
@@ -93,6 +95,7 @@ export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupM
   useImperativeHandle(ref, () => ({
     // doValidate 暴露给父组件的方法
     doValidate: () => _triggerValidate(),
+    form
   }));
 
   const renderFormItem = (itm: CriteriaSourceModel) => {
@@ -189,7 +192,7 @@ export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupM
       )
     }
 
-    return <Button type="primary" htmlType="submit"> 查询 </Button>
+    return <Button type="primary" htmlType="submit"> { buttonLabel || '查询' }</Button>
   }
 
   return (

@@ -105,7 +105,14 @@ const config = [
 export default (props) => {
   return (
     <>
-      <Button onClick={() => { ref.current?.doValidate() }}>查询</Button>
+      <Button onClick={() => {
+        ref.current?.doValidate().then(r => {
+          if (r) {
+            console.log(r);
+            ref.current?.form.resetFields();
+          }
+        })
+      }}>查询</Button>
       <QueryCriteriaGroup
         source={config}
         onValidate={(values: Dict) => { console.log("values: ", values) }}
@@ -138,6 +145,9 @@ export default (props) => {
 ```
 ##### onValidate
 return the form data.
+
+#### ref
+ref.current: { doValidate: () => Promise<any>; form: FormInstance }, the `FormInstance` is the with `antd Table` FormInstance
 
 ## License
 [MIT](LICENSE)

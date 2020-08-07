@@ -1,6 +1,6 @@
 {
   "name": "@bigorange/ui",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "make your life easy",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -35,7 +35,10 @@
     "UI",
     "Table Component",
     "Button",
-    "Button Group"
+    "Button Group",
+    "query",
+    "query group",
+    "config query group"
   ],
   "license": "MIT"
 }

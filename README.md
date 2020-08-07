@@ -356,7 +356,7 @@ export default (props) => {
 ```js
 {
   type: 'InputNumber' | 'Input' | 'DatePicker' | 'DatePicker' | 'RangePicker' | JSX.Element; // it's value could be your customized form control
-  name?: string;
+  name: string; // it's not required for "RangePicker"
   label: string;
   options?: { value: any; label: string }[];
   initialValue?: any;

@@ -154,6 +154,7 @@ export default (props) => {
     </>
   )
 }
+```
 
 ##### config
 ```js
@@ -383,7 +384,11 @@ your customzed comoponent used to trigger [onValidate](#onValidate)
   />
 ```
 #### ref
-ref.current: { doValidate: () => Promise<any>; form: FormInstance }, the `FormInstance` is the with `antd Table` FormInstance
+the `FormInstance` is the with `antd Table` FormInstance
+
+```js
+ref.current: { doValidate: () => Promise<any>; form: FormInstance },
+```
 
 #### buttonLable
 the default button's label

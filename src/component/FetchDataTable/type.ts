@@ -11,7 +11,7 @@ export type OriginDataModal =
     }
   | undefined;
 
-export type fetchDataFuncType = (pagination: Dict, filters: Dict, sort: Dict) => Promise<OriginDataModal | undefined>;
+export type fetchDataFuncType = (pagination: Dict, filters: Dict, sort: Dict, ...reset: any) => Promise<OriginDataModal | undefined>;
 
 export type antdTablePropsType = TableProps<any> | Dict;
 

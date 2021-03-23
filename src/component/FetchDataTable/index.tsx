@@ -13,7 +13,7 @@ import { OriginDataModal, FetchDataTableModel, Dict } from './type';
  */
 
 type FdtRefCurrentAttrType = {
-  doQuery: () => void;
+  doQuery: (antdTableChangeParams?: Dict) => void;
 }
 
 export const getOtherAntdTableProps = (originAntdTableProps = {}, disableList: string[]) => {
@@ -31,17 +31,17 @@ export const getOtherAntdTableProps = (originAntdTableProps = {}, disableList: s
 };
 
 export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, ref) => {
-  const { columns, disableInitialQuery, disableOnChangeQuery, antdTableProps, onGetData, fetchDataFunc } = props;
+  const { columns, disableInitialQuery, disableOnChangeQuery, antdTableProps, onGetData, fetchDataFunc, empty } = props;
   const [data, setData] = useState<Dict[]>([]);
   const [pagination, setPagination] = useState<any>({ current: '1', pageSize: '10', total: '0' });
   const [loading, setLoading] = useState<boolean>(false);
 
   const instanceValue = useRef<any>({ unmount: false });
 
-  const newInvokeFetchData = (pagination: Dict, filters = {}, sorter = {}) => {
+  const newInvokeFetchData = (pagination: Dict, filters = {}, sorter = {}, ...rest: any) => {
     setLoading(true);
     fetchDataFunc &&
-      fetchDataFunc(pagination, filters, sorter).then((originData: OriginDataModal) => {
+      fetchDataFunc(pagination, filters, sorter, ...rest).then((originData: OriginDataModal) => {
         if (originData) {
           const { data, pageSize, current, total } = originData;
           if (instanceValue.current.unmount) {
@@ -68,34 +68,38 @@ export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, re
 
   useImperativeHandle(ref, () => ({
     // doQuery 暴露给父组件的方法
-    doQuery: () => {
-      newInvokeFetchData && newInvokeFetchData({ current: 1, pageSize: 10 });
+    doQuery: (antdTableChangeParams?: Dict) => {
+      newInvokeFetchData && newInvokeFetchData({ current: 1, pageSize: 10, ...antdTableChangeParams });
     },
   }));
 
-  const handleTableChange = (tablePagination: Dict, filters: Dict, sorter: Dict) => {
+  const handleTableChange = (tablePagination: Dict, filters: Dict, sorter: Dict, ...reset: any) => {
     if (disableOnChangeQuery) {
       setPagination(tablePagination);
     } else {
-      newInvokeFetchData(tablePagination, filters, sorter);
+      newInvokeFetchData(tablePagination, filters, sorter, ...reset);
     }
   };
 
-  return (
-    <>
-      {Array.isArray(data) && data.length ? (
+  const renderContent = () => {
+    if ((!Array.isArray(data) || !data.length) && empty) {
+      return empty;
+    }
+
+    return <>
         <Table
           size="small"
           columns={columns}
-          dataSource={data.map((itm: any) => ({ ...itm, key: itm.name }))}
+          dataSource={data.map((itm: any) => ({ ...itm, key: itm.key || itm.name }))}
           pagination={pagination}
           onChange={handleTableChange}
           loading={loading}
           {...getOtherAntdTableProps(antdTableProps, ['columns', 'dataSource', 'onChange'])}
         />
-      ) : (
-        <Empty />
-      )}
     </>
+  }
+
+  return (
+    <>{ renderContent() }</>
   );
 });

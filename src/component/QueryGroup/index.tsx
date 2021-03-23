@@ -36,6 +36,11 @@ type QueryCriteriaGroupModel = {
   queryComp?: string | JSX.Element | null;
   onFinishFailed?: (error: Dict) => void;
   buttonLabel?: string;
+  okText?: string;
+  resetText?: string;
+  okButtonAntdProps?: Dict;
+  resetButtonAntdProps?: Dict;
+  extra?: React.ReactNode;
 };
 
 type QCGRefCurrentAttrType = {
@@ -85,7 +90,7 @@ const GetInitialValues = (source: CriteriaSourceModel[], formInitialValuse: Dict
 };
 
 export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupModel>((props, ref) => {
-  const { source, onValidate, key, initialValues, antdFormProps, queryComp, onFinishFailed, buttonLabel } = props;
+  const { source, onValidate, key, initialValues, antdFormProps, queryComp, onFinishFailed, buttonLabel, onChange, okText, resetText, okButtonAntdProps, resetButtonAntdProps, extra  } = props;
   const [form] = Form.useForm();
   const compList: CriteriaSourceModel[] = Array.isArray(source) ? source.map(itm => ({ ...itm, name: GetItemName(itm) })) : [];
   const tailLayout = {
@@ -144,32 +149,42 @@ export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupM
       return Comp ? renderFormItem(itm)(<Comp allowClear {...itm.antdDataEntryProps} />) : null;
     });
 
-  const onFinish = (values: Dict) => {
+  const formatValues = (values: Dict) => {
+    const valuesCopy = { ...values };
     compList.forEach((itm: Dict) => {
 
-      const curretValue = values[itm.name];
+      const curretValue = valuesCopy[itm.name];
 
       if (itm.type === 'DatePicker' && curretValue) {
-        values[itm.name] = curretValue.format(itm.format || 'YYYY-MM-DD HH:ss:mm');
+        valuesCopy[itm.name] = curretValue.format(itm.format || 'YYYY-MM-DD HH:mm:ss');
       } else if (itm.type === 'RangePicker' && curretValue) {
         const firstName = (itm.rangeNames || [])[0];
         const secondName = (itm.rangeNames || [])[1];
-        values[firstName] = curretValue[0].format(itm.format || 'YYYY-MM-DD HH:ss:mm');
-        values[secondName] = curretValue[1].format(itm.format || 'YYYY-MM-DD HH:ss:mm');
+        valuesCopy[firstName] = curretValue[0].format(itm.format || 'YYYY-MM-DD HH:mm:ss');
+        valuesCopy[secondName] = curretValue[1].format(itm.format || 'YYYY-MM-DD HH:mm:ss');
 
-        delete values[itm.name];
+        delete valuesCopy[itm.name];
       }
     });
 
     const newValues = {} as Dict;
-    for (let key in values) {
-      const originValue = values[key];
+    for (let key in valuesCopy) {
+      const originValue = valuesCopy[key];
       if (originValue !== '' && originValue !== null && originValue !== undefined) {
         newValues[key] = originValue;
       }
     }
-    return onValidate(newValues);
-  };
+
+    return newValues;
+  }
+
+  const onFinish = (values: Dict) => onValidate(formatValues(values));
+
+  const onValuesChange=(changedValues: Dict, values: Dict) => { 
+    if(onChange) {
+      onChange(formatValues(changedValues), formatValues(values));
+    }
+  }
 
   const currentInitialValues = GetInitialValues(compList, initialValues);
 
@@ -188,11 +203,14 @@ export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupM
       return null
     } else if (queryComp) {
       return (
-        <span onClick={() => _triggerValidate()}>{queryComp}</span>
+        <span>{queryComp}</span>
       )
     }
-
-    return <Button type="primary" htmlType="submit"> { buttonLabel || '查询' }</Button>
+    return <>
+      <Button type="primary" htmlType="submit" style={{ marginRight: 10 }} {...okButtonAntdProps}>{ buttonLabel || okText || "查询" }</Button>
+      <Button type="primary" onClick={() => { form.resetFields(); }} {...resetButtonAntdProps}>{ resetText || "重置" }</Button>
+      { extra }
+    </>
   }
 
   return (
@@ -203,6 +221,7 @@ export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupM
       name="basic"
       initialValues={{ ...(currentInitialValues || {}) }}
       onFinish={onFinish}
+      onValuesChange={onValuesChange}
       size="middle"
       onFinishFailed={onFinishFailed}
       {...getOtherAntdTableProps(antdFormProps, ['onFinish', 'onFinishFailed'])}

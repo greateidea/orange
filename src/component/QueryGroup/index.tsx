@@ -30,6 +30,7 @@ type CriteriaSourceModel = {
 type QueryCriteriaGroupModel = {
   source: CriteriaSourceModel[];
   onValidate: (params: Dict) => any;
+  onChange?: (changedValuse: Dict, allValuse: Dict) => void;
   initialValues?: any;
   key?: any;
   antdFormProps?: FormProps;
@@ -44,8 +45,9 @@ type QueryCriteriaGroupModel = {
 };
 
 type QCGRefCurrentAttrType = {
-  doValidate: () => Promise<any>;
-  form: FormInstance;
+  doValidate?: () => Promise<any>;
+  reset?: () => void;
+  form?: FormInstance;
 }
 
 export enum QueryCriteriaCompType {
@@ -90,16 +92,14 @@ const GetInitialValues = (source: CriteriaSourceModel[], formInitialValuse: Dict
 };
 
 export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupModel>((props, ref) => {
-  const { source, onValidate, key, initialValues, antdFormProps, queryComp, onFinishFailed, buttonLabel, onChange, okText, resetText, okButtonAntdProps, resetButtonAntdProps, extra  } = props;
+  const { source, onValidate, key, initialValues, antdFormProps, queryComp, onFinishFailed, buttonLabel, onChange, okText, resetText, okButtonAntdProps, resetButtonAntdProps, extra } = props;
   const [form] = Form.useForm();
   const compList: CriteriaSourceModel[] = Array.isArray(source) ? source.map(itm => ({ ...itm, name: GetItemName(itm) })) : [];
-  const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-  };
 
   useImperativeHandle(ref, () => ({
     // doValidate 暴露给父组件的方法
     doValidate: () => _triggerValidate(),
+    reset: () => { form.resetFields() },
     form
   }));
 
@@ -228,7 +228,7 @@ export default forwardRef<QCGRefCurrentAttrType | undefined, QueryCriteriaGroupM
     >
       {getComps(compList)}
       {Array.isArray(compList) && compList.length ? (
-        <Form.Item {...tailLayout} key={key} style={{ marginBottom: 10 }}>
+        <Form.Item key={key} style={{ marginBottom: 10 }}>
           { renderQueryComp() }
         </Form.Item>
       ) : null}

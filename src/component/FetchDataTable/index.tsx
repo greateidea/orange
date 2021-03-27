@@ -1,5 +1,5 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
-import { Table, Empty } from 'antd';
+import { Table } from 'antd';
 import { OriginDataModal, FetchDataTableModel, Dict } from './type';
 
 /**
@@ -10,6 +10,7 @@ import { OriginDataModal, FetchDataTableModel, Dict } from './type';
  * andtTableProps: antd Table的props, columns, dataSource会被忽略
  * ref: 获取内部方法，例如点击查询时处罚查询
  * fetchDataFunc: 获取远程数据的函数，在组件挂在时和onChange事件时执行
+ * empty: 数据为空时显示内容
  */
 
 type FdtRefCurrentAttrType = {

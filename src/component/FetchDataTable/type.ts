@@ -1,4 +1,5 @@
 import { TableProps } from 'rc-table/lib/Table';
+import React from '_@types_react@17.0.3@@types/react';
 
 export type Dict = {[key: string]: any};
 
@@ -27,4 +28,5 @@ export type FetchDataTableModel = {
   ref?: React.Ref<any>;
   onGetData?: (data: any) => any; // 获取远程数据后的回调
   fetchDataFunc?: fetchDataFuncType;
+  empty?: React.ReactNode;
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider } from 'antd';
+import { Divider, Empty } from 'antd';
 import FetchDataTable from '../component/FetchDataTable';
 import ButtonGroup from '../component/ButtonGroup';
 import ConfigTableTest from './ConfigTableTest';
@@ -70,6 +70,7 @@ const getTestData = (pagination: any) => {
 const fetchDataFunc = (pagination: any) => {
   console.log("do query");
   return Promise.resolve({ ...pagination, total: 40, data: getTestData(pagination), });
+  // return Promise.resolve({ ...pagination, total: 40, data: [] });
 };
 
 const antdTableProps = { size: 'default' };
@@ -88,6 +89,7 @@ export default function TestComponents(props = {}) {
         columns={TableColumes}
         fetchDataFunc={fetchDataFunc}
         antdTableProps={antdTableProps}
+        empty={<Empty />}
       />
       <Divider />
       <QueryGroupTest />

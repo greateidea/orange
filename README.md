@@ -57,6 +57,9 @@ Provide a [ref](#ref), the 'doQuery' function can be used to tigger 'fetchDataFu
   data: any;
 >
 ```
+##### empty
+display your component when no data.
+
 ##### onGetData
 The 'data' is the result of invoking [fetchDataFunc](#fetchDataFunc).
 It trigged after [fetchDataFunc](#fetchDataFunc) return the result evertime.
@@ -342,9 +345,15 @@ export default (props) => {
           console.log("values: ", values)
           return "good";
         }}
-        queryComp={<a>点击查询</a>} // or queryComp={null}
+        queryComp={<a>click to query</a>} // or queryComp={null}
         initialValues={{ name: 'a cool name', phone: '123' }}
         ref={ref}
+        onChange={(changedValues, allValues) => { console.log('onChange', changedValues, allValues) }}
+        okText="customer ok text"
+        resetText="customer reset fields text"
+        okButtonAntdProps={{ type: 'primary' }} // antd Button props of ok button 
+        resetButtonAntdProps={{ size: 'large' }} // antd Button props of reset button 
+        extra={<Input palceholder="customer componet at the end"/>}
       />
     </>
   )
@@ -365,7 +374,7 @@ export default (props) => {
   style?: Dict;
   rangeNames?: string[];
   antdDataEntryProps?: {[key: string]: any}; // antd Data Entry Components' Props
-  format?: string; // the data format, eg. 'YYYY-MM-DD HH:ss:mm'
+  format?: string; // the data format, eg. 'YYYY-MM-DD HH:mm:ss'
 }
 ```
 ##### onValidate

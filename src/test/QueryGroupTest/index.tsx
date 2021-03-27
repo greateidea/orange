@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Button, Modal, Divider } from 'antd';
-import QueryCriteriaGroup from '../../component/QueryGroup';
+import { Button, Modal, Input, Divider } from 'antd';
+import QueryGroup from '../../component/QueryGroup';
 import config from './config';
 import { Dict } from '../../component/FetchDataTable/type';
 
@@ -18,14 +18,22 @@ export default () => {
   return (
     <div>
       <Button onClick={() => { ref.current?.doValidate().then((r: any) => console.log("查询起来: ", r)) }}>查询起来</Button>
-      <QueryCriteriaGroup
+      <QueryGroup
         source={config}
+        onChange={(changedValuse: Dict, allValuse: Dict) => {
+          console.log('QueryGroup onChange', changedValuse, allValuse)
+        }}
+        extra={<span style={{ display: 'inline-block', marginLeft: 10, width: 150 }}><Input placeholder="extra"/></span>}
         onValidate={(values: Dict) => {
           console.log("values: ", values)
           return "perfect done"
         }}
-        queryComp={<a>点击查询</a>} 
+        // queryComp={<a>点击查询</a>}
         initialValues={{ name: 'a cool name', phone: '123' }}
+        okText="点击查询"
+        resetText="点击重置"
+        okButtonAntdProps={{ type: "dashed" }}
+        resetButtonAntdProps={{ type: "link" }}
         ref={ref}
       />
 
@@ -46,11 +54,14 @@ export default () => {
           });
         }}
       >
-        <QueryCriteriaGroup
+        <QueryGroup
           source={queryGroupConfig}
           onValidate={(values: Dict) => {
             console.log("values: ", values)
             return "doQuery sucess"
+          }}
+          onChange={(changedValuse: Dict, allValuse: Dict) => {
+            console.log('QueryGroup onChange', changedValuse, allValuse)
           }}
           queryComp={null}
           initialValues={{ name: 'a cool name', phone: '123' }}

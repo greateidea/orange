@@ -50,7 +50,9 @@ export default (props) => {
 It will be invoked when 'comonentDidmount' and 'onChange' of [antd](https://ant.design/) `Table` triggered.
 Provide a [ref](#ref), the 'doQuery' function can be used to tigger 'fetchDataFunc'.
 ```js
-(pagination, filters, sorter) => Promise<
+// Antd Table onChange params:
+// pagination, filters, sorter, extra: { currentDataSource: [], action: paginate | sort | filter }
+(pagination, filters, sorter, ...resetAntdTableOnChangeParams) => Promise<
   current: string | number;
   pageSize: string | number;
   total: string | number;
@@ -68,11 +70,15 @@ It trigged after [fetchDataFunc](#fetchDataFunc) return the result evertime.
 ```
 ##### ref
 This provide a 'doQuery' function for invoking [fetchDataFunc](#fetchDataFunc).
+
 ```js
 import React, { useRef } from 'react';
 
 const myRef = useRef();
 
+// doQuery: (antdTableChangeParams?: Dict) => void;
+// Antd Table OnChange params:
+// pagination, filters, sorter, extra: { currentDataSource: [], action: paginate | sort | filter }
 <FetchDataTable
   ...
   ref={ myRef } // then you can trigger the `fetchDataFunc` by 'myRef.current.doQuery()'
@@ -177,7 +183,9 @@ export default (props) => {
 It will be invoked when 'comonentDidmount' and the event 'onChange' of [antd](https://ant.design/) `Table` triggered.
 if you provide a [ref](#ref), it will give you a 'doQuery' function to invoked 'fetchDataFunc'.
 ```js
-(pagination, filters, sorter) => Promise<
+// Antd Table OnChange params:
+// pagination, filters, sorter, extra: { currentDataSource: [], action: paginate | sort | filter }
+(pagination, filters, sorter, ...resetAntdTableOnChangeParams) => Promise<
   current: string | number;
   pageSize: string | number;
   total: string | number;
@@ -332,7 +340,8 @@ export default (props) => {
           ref.current?.doValidate().then(r => {
             if (r) {
               console.log(r);
-              ref.current?.form.resetFields();
+              ref.current?.resetFields(); // or ref.current?.form.resetFields();
+              
             }
           })
         }}

@@ -60,7 +60,7 @@ export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, re
   useEffect(() => {
     instanceValue.current.unmount =  false;
     if (!disableInitialQuery) {
-      newInvokeFetchData && newInvokeFetchData({ current: 1, pageSize: 10 });
+      newInvokeFetchData && newInvokeFetchData({ current: 1, pageSize: pagination.paigeSize });
     }
     return () => {
       instanceValue.current.unmount = true;
@@ -70,7 +70,7 @@ export default forwardRef<FdtRefCurrentAttrType, FetchDataTableModel>((props, re
   useImperativeHandle(ref, () => ({
     // doQuery 暴露给父组件的方法
     doQuery: (antdTableChangeParams?: Dict) => {
-      newInvokeFetchData && newInvokeFetchData({ current: 1, pageSize: 10, ...antdTableChangeParams });
+      newInvokeFetchData && newInvokeFetchData({ current: 1, pageSize: pagination.paigeSize, ...antdTableChangeParams });
     },
   }));
 

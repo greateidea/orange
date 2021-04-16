@@ -8,7 +8,7 @@ import { OriginDataModal, FetchDataTableModel, Dict } from './type';
  * disableOnChangeQuery: boolean; // 禁用onChange时查询
  * onGetData: 获取远程数据后的回调
  * andtTableProps: antd Table的props, columns, dataSource会被忽略
- * ref: 获取内部方法，例如点击查询时处罚查询
+ * ref: 获取内部方法，例如点击查询时处触发询
  * fetchDataFunc: 获取远程数据的函数，在组件挂在时和onChange事件时执行
  * empty: 数据为空时显示内容
  */
